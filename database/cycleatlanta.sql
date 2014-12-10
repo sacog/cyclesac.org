@@ -129,9 +129,9 @@ INSERT INTO income ( id, text ) VALUES ( 2, "$25,000 to $34,999" );
 INSERT INTO income ( id, text ) VALUES ( 3, "$35,000 to $49,999" );
 INSERT INTO income ( id, text ) VALUES ( 4, "$50,000 to $74,999" );
 INSERT INTO income ( id, text ) VALUES ( 5, "$75,000 to $99,999" );
-INSERT INTO income ( id, text ) VALUES ( 5, "$100,000 to $149,999" );
-INSERT INTO income ( id, text ) VALUES ( 5, "$150,000 to $199,999" );
-INSERT INTO income ( id, text ) VALUES ( 6, "More than $200,000" );
+INSERT INTO income ( id, text ) VALUES ( 6, "$100,000 to $149,999" );
+INSERT INTO income ( id, text ) VALUES ( 7, "$150,000 to $199,999" );
+INSERT INTO income ( id, text ) VALUES ( 8, "More than $200,000" );
 
 INSERT INTO cycling_freq ( id, text ) VALUES ( 0, "no data" );
 INSERT INTO cycling_freq ( id, text ) VALUES ( 1, "Less than once a month" );
