@@ -1,7 +1,3 @@
--- Cycle Altanta data model
--- Christopher Le Dantec
--- 01.12.2013
-
 CREATE TABLE trip (
 	id      INTEGER UNSIGNED AUTO_INCREMENT,
 	user_id INTEGER UNSIGNED,
@@ -49,25 +45,18 @@ CREATE TABLE user (
 	created   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	device    VARCHAR(32),
 	app_version  VARCHAR(32),
-	email     VARCHAR(64),
 	age       TINYINT,
+	email     VARCHAR(64),
+	future_survey BOOLEAN,
 	gender    TINYINT,
-	income	  TINYINT,
 	ethnicity TINYINT,
+	income	  TINYINT,
 	homeZIP   VARCHAR(32),
-	schoolZIP VARCHAR(32),
 	workZIP   VARCHAR(32),
 	cycling_freq  TINYINT default NULL,
-	rider_history TINYINT,
-	rider_type    TINYINT,
+	rider_confidence    TINYINT,
 	PRIMARY KEY ( id ),
 	UNIQUE KEY ( device )
-) ENGINE=INNODB;
-
-CREATE TABLE email (
-	id        INTEGER UNSIGNED AUTO_INCREMENT,
-	email     VARCHAR(64),
-	PRIMARY KEY ( id )
 ) ENGINE=INNODB;
 
 CREATE TABLE age (
@@ -100,13 +89,7 @@ CREATE TABLE cycling_freq (
 	PRIMARY KEY ( id )
 ) ENGINE=INNODB;
 
-CREATE TABLE rider_type (
-	id   TINYINT,
-	text VARCHAR(32),
-	PRIMARY KEY ( id )
-) ENGINE=INNODB;
-
-CREATE TABLE rider_history (
+CREATE TABLE rider_confidence (
 	id   TINYINT,
 	text VARCHAR(32),
 	PRIMARY KEY ( id )
@@ -132,22 +115,23 @@ INSERT INTO gender ( id, text ) VALUES ( 1, "Female" );
 INSERT INTO gender ( id, text ) VALUES ( 2, "Male" ); 
 
 INSERT INTO ethnicity ( id, text ) VALUES ( 0, "no data" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 1, "White" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 2, "African American" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 3, "Asian" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 4, "Native American" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 5, "Pacific Islander" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 6, "Multi-racial" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 7, "Hispanic / Mexican / Latino" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 8, "Other" );
+INSERT INTO ethnicity ( id, text ) VALUES ( 1, "African-American" );
+INSERT INTO ethnicity ( id, text ) VALUES ( 2, "Asian" );
+INSERT INTO ethnicity ( id, text ) VALUES ( 3, "Caucasian/White" );
+INSERT INTO ethnicity ( id, text ) VALUES ( 4, "Hispanic/Latino" );
+INSERT INTO ethnicity ( id, text ) VALUES ( 5, "Native American/Alaskan" );
+INSERT INTO ethnicity ( id, text ) VALUES ( 6, "Pacific Islander/Hawaiian native" );
+INSERT INTO ethnicity ( id, text ) VALUES ( 7, "Other" );
 
 INSERT INTO income ( id, text ) VALUES ( 0, "no data" );
-INSERT INTO income ( id, text ) VALUES ( 1, "Less than $20,000" );
-INSERT INTO income ( id, text ) VALUES ( 2, "$20,000 to $39,999" );
-INSERT INTO income ( id, text ) VALUES ( 3, "$40,000 to $59,999" );
-INSERT INTO income ( id, text ) VALUES ( 4, "$60,000 to $74,999" );
+INSERT INTO income ( id, text ) VALUES ( 1, "Less than $15,000" );
+INSERT INTO income ( id, text ) VALUES ( 2, "$25,000 to $34,999" );
+INSERT INTO income ( id, text ) VALUES ( 3, "$35,000 to $49,999" );
+INSERT INTO income ( id, text ) VALUES ( 4, "$50,000 to $74,999" );
 INSERT INTO income ( id, text ) VALUES ( 5, "$75,000 to $99,999" );
-INSERT INTO income ( id, text ) VALUES ( 6, "$100,000 or greater" );
+INSERT INTO income ( id, text ) VALUES ( 5, "$100,000 to $149,999" );
+INSERT INTO income ( id, text ) VALUES ( 5, "$150,000 to $199,999" );
+INSERT INTO income ( id, text ) VALUES ( 6, "More than $200,000" );
 
 INSERT INTO cycling_freq ( id, text ) VALUES ( 0, "no data" );
 INSERT INTO cycling_freq ( id, text ) VALUES ( 1, "Less than once a month" );
@@ -155,17 +139,11 @@ INSERT INTO cycling_freq ( id, text ) VALUES ( 2, "Several times per month" );
 INSERT INTO cycling_freq ( id, text ) VALUES ( 3, "Several times per week" );
 INSERT INTO cycling_freq ( id, text ) VALUES ( 4, "Daily" );
 
-INSERT INTO rider_type ( id, text ) VALUES ( 0, "no data" );
-INSERT INTO rider_type ( id, text ) VALUES ( 1, "Strong & fearless" );
-INSERT INTO rider_type ( id, text ) VALUES ( 2, "Enthused & confident" );
-INSERT INTO rider_type ( id, text ) VALUES ( 3, "Comfortable, but cautious" );
-INSERT INTO rider_type ( id, text ) VALUES ( 4, "Interested, but concerned" );
-
-INSERT INTO rider_history ( id, text ) VALUES ( 0, "no data" );
-INSERT INTO rider_history ( id, text ) VALUES ( 1, "Since childhood" );
-INSERT INTO rider_history ( id, text ) VALUES ( 2, "Several years" );
-INSERT INTO rider_history ( id, text ) VALUES ( 3, "One year or less" );
-INSERT INTO rider_history ( id, text ) VALUES ( 4, "Just trying it out / just started" );
+INSERT INTO rider_confidence ( id, text ) VALUES ( 0, "no data" );
+INSERT INTO rider_confidence ( id, text ) VALUES ( 1, "Strong & fearless" );
+INSERT INTO rider_confidence ( id, text ) VALUES ( 2, "Enthused & confident" );
+INSERT INTO rider_confidence ( id, text ) VALUES ( 3, "Comfortable, but cautious" );
+INSERT INTO rider_confidence ( id, text ) VALUES ( 4, "Interested, but concerned" );
 
 INSERT INTO note_type ( id, text ) VALUES (0, 'Pavement issue');
 INSERT INTO note_type ( id, text ) VALUES (1, 'Traffic signal');

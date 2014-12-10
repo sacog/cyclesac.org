@@ -19,3 +19,5 @@ test
 include/Database.php
 
 include/Database_dev.php
+/*.iml
+/.idea
