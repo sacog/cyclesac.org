@@ -48,7 +48,8 @@ if ( $version == PROTOCOL_VERSION_1 || $version == PROTOCOL_VERSION_2 || $versio
   $coords   = isset( $_POST['coords'] )  ? $_POST['coords']  : null; 
   $device   = isset( $_POST['device'] )  ? $_POST['device']  : null; 
   $notes    = isset( $_POST['notes'] )   ? $_POST['notes']   : null; 
-  $purpose  = isset( $_POST['purpose'] ) ? $_POST['purpose'] : null; 
+  $purpose  = isset( $_POST['purpose'] ) ? $_POST['purpose'] : null;
+  $comfort  = isset( $_POST['comfort'] ) ? $_POST['comfort'] : null;
   $start    = isset( $_POST['start'] )   ? $_POST['start']   : null; 
   $userData = isset( $_POST['user'] )    ? $_POST['user']    : null; 
 } 
@@ -67,6 +68,7 @@ elseif ( $version == PROTOCOL_VERSION_3) {
   $device   = isset( $query_vars['device'] )  ? $query_vars['device']  : null;
   $notes    = isset( $query_vars['notes'] )   ? $query_vars['notes']   : null;
   $purpose  = isset( $query_vars['purpose'] ) ? $query_vars['purpose'] : null;
+  $comfort  = isset( $query_vars['comfort'] ) ? $query_vars['comfort'] : null;
   $start    = isset( $query_vars['start'] )   ? $query_vars['start']   : null;
   $userData = isset( $query_vars['user'] )    ? $query_vars['user']    : null;
 }
@@ -201,7 +203,7 @@ if ( is_string( $device ) && strlen( $device ) === 32 || strlen( $device ) === 3
 			$stop = null;
 	
 			// create a new trip, note unique compound key (user_id, start) required
-			if ( $trip = TripFactory::insert( $user->id, $purpose, $notes, $start ) )
+			if ( $trip = TripFactory::insert( $user->id, $purpose, $comfort, $notes, $start ) )
 			{
 				$coord = null;
 				if ( $version == PROTOCOL_VERSION_3 )

@@ -2,6 +2,7 @@ CREATE TABLE trip (
 	id      INTEGER UNSIGNED AUTO_INCREMENT,
 	user_id INTEGER UNSIGNED,
 	purpose VARCHAR(255),
+	comfort VARCHAR(255),
 	notes VARCHAR(255),
 	start   TIMESTAMP,
 	stop    TIMESTAMP,

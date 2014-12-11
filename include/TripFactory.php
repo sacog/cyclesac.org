@@ -7,24 +7,25 @@ class TripFactory
 {
 	static $class = 'Trip';
 
-	public static function insert( $user_id, $purpose, $notes, $start )
+	public static function insert( $user_id, $purpose, $comfort, $notes, $start )
 	{
 		$db = DatabaseConnectionFactory::getConnection();
 
-		$query = "INSERT INTO trip ( user_id, purpose, notes, start ) VALUES ( '" .
+		$query = "INSERT INTO trip ( user_id, purpose, comfort, notes, start ) VALUES ( '" .
 				$db->escape_string( $user_id ) . "', '" .
 				$db->escape_string( $purpose ) . "', '" .
+                $db->escape_string( $comfort ) . "', '" .
 				$db->escape_string( $notes ) . "', '" .
 				$db->escape_string( $start ) . "' )";
 
 		if ( ( $db->query( $query ) === true ) &&
 			 ( $id = $db->insert_id ) )
 		{
-			Util::log( "INFO " . __METHOD__ . "() created new trip {$id} for user {$user_id}, start {$start}, {$purpose}: {$notes}" );
+			Util::log( "INFO " . __METHOD__ . "() created new trip {$id} for user {$user_id}, start {$start}, {$purpose}, {$comfort}: {$notes}" );
 			return self::getTrip( $id );
 		}
 		else
-			Util::log( "ERROR " . __METHOD__ . "() failed to create new trip for user {$user_id}, start {$start}, {$purpose}: {$notes}" );
+			Util::log( "ERROR " . __METHOD__ . "() failed to create new trip for user {$user_id}, start {$start}, {$purpose}, {$comfort}: {$notes}" );
 
 		return false;
 	}
@@ -97,7 +98,7 @@ class TripFactory
 	*/
 	public static function getTripAttrsByTrips($trip_id) {
 		$db = DatabaseConnectionFactory::getConnection();
-		$query = "select trip.id,user.id,age,gender,homezip,schoolzip,workzip,cycling_freq.text,purpose,device from trip LEFT JOIN (user,cycling_freq) on (user.id=trip.user_id AND user.cycling_freq=cycling_freq.id) where trip.id='" . $db->escape_string($trip_id) . "' ORDER BY trip.id ASC";
+		$query = "select trip.id,user.id,age,gender,homezip,schoolzip,workzip,cycling_freq.text,purpose,comfort,device from trip LEFT JOIN (user,cycling_freq) on (user.id=trip.user_id AND user.cycling_freq=cycling_freq.id) where trip.id='" . $db->escape_string($trip_id) . "' ORDER BY trip.id ASC";
 
 		if ( ( $result = $db->query( $query ) ) && $result->num_rows )
 		{
@@ -133,7 +134,7 @@ class TripFactory
 		
 		$trip_ids = array();
 
-		$query = "SELECT trip.id,age,gender,ethnicity,rider_type,cycling_freq.text,purpose FROM trip LEFT JOIN (user,cycling_freq) ON (user.id=trip.user_id AND user.cycling_freq=cycling_freq.id) WHERE trip.id IN (SELECT trip.id FROM trip WHERE user_id IN(SELECT user.id FROM user " . $db->escape_string($filterByDemographics) . ") ) AND n_coord>'120' AND purpose IN (" . $filterByPurpose . ") ORDER BY trip.id ASC";
+		$query = "SELECT trip.id,age,gender,ethnicity,rider_type,cycling_freq.text,purpose,comfort FROM trip LEFT JOIN (user,cycling_freq) ON (user.id=trip.user_id AND user.cycling_freq=cycling_freq.id) WHERE trip.id IN (SELECT trip.id FROM trip WHERE user_id IN(SELECT user.id FROM user " . $db->escape_string($filterByDemographics) . ") ) AND n_coord>'120' AND purpose IN (" . $filterByPurpose . ") ORDER BY trip.id ASC";
 
 		Util::log(  "INFO " . __METHOD__ . "() with query: {$query}" );
 		$result = $db->query( $query );		
