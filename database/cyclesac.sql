@@ -126,7 +126,7 @@ INSERT INTO ethnicity ( id, text ) VALUES ( 7, "Other" );
 
 INSERT INTO income ( id, text ) VALUES ( 0, "no data" );
 INSERT INTO income ( id, text ) VALUES ( 1, "Less than $15,000" );
-INSERT INTO income ( id, text ) VALUES ( 2, "$25,000 to $34,999" );
+INSERT INTO income ( id, text ) VALUES ( 2, "$15,000 to $34,999" );
 INSERT INTO income ( id, text ) VALUES ( 3, "$35,000 to $49,999" );
 INSERT INTO income ( id, text ) VALUES ( 4, "$50,000 to $74,999" );
 INSERT INTO income ( id, text ) VALUES ( 5, "$75,000 to $99,999" );
