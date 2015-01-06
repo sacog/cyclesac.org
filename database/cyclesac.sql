@@ -44,7 +44,7 @@ CREATE TABLE coord (
 CREATE TABLE user (
 	id        INTEGER UNSIGNED AUTO_INCREMENT,
 	created   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	device    VARCHAR(32),
+	device    VARCHAR(128),
 	app_version  VARCHAR(32),
 	age       TINYINT,
 	email     VARCHAR(64),
