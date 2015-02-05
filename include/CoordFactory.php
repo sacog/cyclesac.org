@@ -185,8 +185,8 @@ Util::log( __METHOD__ . "() with query of length " . strlen($query) .
 		$db = DatabaseConnectionFactory::getConnection();
 		$coords = array();
 		$query = "SELECT * FROM coord WHERE ";
-	    if (is_array($trip_id)) {
-	      $first = True;
+	        if (is_array($trip_id)) {
+	          	$first = True;
 	  		foreach ($trip_id as $idx => $single_trip_id ) {
 	        	if ($first) {
 					$first = False;
@@ -197,10 +197,11 @@ Util::log( __METHOD__ . "() with query of length " . strlen($query) .
 			}
 		} else {
 			$query .= "trip_id IN (" .  $trip_id  . ")";
+			Util::log( "INFO " . __METHOD__ . "() with for trip_id = " . $trip_id);
 		}
 		$query .= " ORDER BY trip_id ASC, recorded ASC";
 		
-		Util::log( "INFO " . __METHOD__ . "() with query of length " . strlen($query) . ': memory_usage = ' . memory_get_usage(True));
+		Util::log( "INFO " . __METHOD__ . "() with query of length " . strlen($query) . ': memory_usage = ' . memory_get_usage(True) . ':trip_id = ' . $trip_id);
 
 		if ( ( $result = $db->query( $query ) ) && $result->num_rows )
 		{

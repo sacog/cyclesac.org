@@ -1,6 +1,6 @@
 // create the map content
 var map = L.map('mapBody', {
-    center: [33.77, -84.372],
+    center: [38.56, -121.47],
     zoom: 14
 });
 
@@ -56,7 +56,7 @@ function toggleTiles (){
 
 var Trips ={
 	init: function(queryString) {
-//		this.trip_count = 1;
+		this.trip_count = 0;
 //		this.config =config;
 //	 	this.trips = this.fetchTrips();	 	
 		this.trips=this.fetchData(queryString);
@@ -111,7 +111,8 @@ fetchTrips: function(query) {
 			latlng = new L.LatLng(self.latitude,self.longitude);
 			latlngs.push(latlng);
 		});	
-		polyline = L.polyline(latlngs, {color: 'red', weight: 1, opacity: 1}).addTo(map);
+		polyline = L.polyline(latlngs, {color: 'red', weight: 5, opacity: 1}).addTo(map);
+		map.fitBounds(polyline.getBounds());
 		$('.trip_count').text(this.trip_count++);
 	}
 }

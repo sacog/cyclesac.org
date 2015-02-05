@@ -11,3 +11,5 @@ class Coord
 	public $hAccuracy;
 	public $vAccuracy;
 }
+
+?>

@@ -81,7 +81,8 @@ elseif ( $version == PROTOCOL_VERSION_4 ) {
 
 // validate device ID: should be 32 but some android devices are reporting 31
 // TODO: This will need to change once iOS7 device ID bug is fixed and released
-if ( is_string( $device ))
+//if ( is_string( $device ) && strlen( $device ) === 32 || strlen( $device ) === 31)
+if ( is_string( $device ) )
 {
 	// HOT FIX: check if the deviceID is the problematic one from iOS7, if so, append the email address if it exists, if no email, append random hash (creating a new user).
 	$userData = (object) json_decode( $userData );

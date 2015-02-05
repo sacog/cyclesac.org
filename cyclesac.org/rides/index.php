@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Cycle Atlanta: Interactive map</title>
+        <title>CycleSac Interactive map</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -37,12 +37,12 @@
 
         <div class="navbar-fixed-top">
             <div class="container">
-                <p class="cycleAtl_title"><a href="http://cycleatlanta.org">Cycle Atlanta <span class="smallText">Mapping the ride to a better Atlanta.</span></a></p>
+                <p class="cycleAtl_title"><a href="http://cyclesac.sacog.org">CycleSac <span class="smallText">Mapping the ride to a better Sacramento.</span></a></p>
             </div>
         </div>
 
         <div class="container"> 
-        	<div id="top"><p>Visualizing <span class="trip_count"></span> rides collected by users of the <a href="http://cycleatlanta.org">Cycle Atlanta apps</a>. <span class="right">Select attributes you wish to view and click "Update the map!" below.</span></p></div>
+        	<div id="top"><p>Visualizing <span class="trip_count"></span> rides collected by users of the <a href="http://cyclesac.sacog.org">CycleSac Apps</a>. <span class="right">Select attributes you wish to view and click "Update the map!" below.</span></p></div>
             <div id="mapBody"></div>
             <div id="controlContainer">
 	            <div id="status"><span id="statusMsg">Updating map...</span><br/><img src="img/loader.gif" alt="loader" width="220" height="19"></div>
@@ -115,21 +115,19 @@
 								<label class="description" for="ethnicity">Ethnicity</label>
 								<span>
 									<input id="ethnicity_1" name="ethnicity_1" class="element checkbox ethnicity" type="checkbox" value="1" checked/>
-									<label class="choice" id="label_ethnicity_1" for="ethnicity_1">White</label>
+									<label class="choice" id="label_ethnicity_1" for="ethnicity_1">African American</label>
 									<input id="ethnicity_2" name="ethnicity_2" class="element checkbox ethnicity" type="checkbox" value="2" checked/>
-									<label class="choice" id="label_ethnicity_2" for="ethnicity_2">African American</label>
+									<label class="choice" id="label_ethnicity_2" for="ethnicity_2">Asian</label>
 									<input id="ethnicity_3" name="ethnicity_3" class="element checkbox ethnicity" type="checkbox" value="3" checked/>
-									<label class="choice" id="label_ethnicity_3" for="ethnicity_3">Asian</label>
+									<label class="choice" id="label_ethnicity_3" for="ethnicity_3">Caucasia/White</label>
 									<input id="ethnicity_4" name="ethnicity_4" class="element checkbox ethnicity" type="checkbox" value="4" checked/>
-									<label class="choice" id="label_ethnicity_4" for="ethnicity_4">Native American</label>
+									<label class="choice" id="label_ethnicity_4" for="ethnicity_4">Hispanic/Latino</label>
 									<input id="ethnicity_5" name="ethnicity_5" class="element checkbox ethnicity" type="checkbox" value="5" checked/>
-									<label class="choice" id="label_ethnicity_5" for="ethnicity_5">Pacific Islander</label>
+									<label class="choice" id="label_ethnicity_5" for="ethnicity_5">Native American/Alaskan</label>
 									<input id="ethnicity_6" name="ethnicity_6" class="element checkbox ethnicity" type="checkbox" value="6" checked/>
-									<label class="choice" id="label_ethnicity_6" for="ethnicity_6">Multi-racial</label>
+									<label class="choice" id="label_ethnicity_6" for="ethnicity_6">Pacific Islander/Hawaiian</label>
 									<input id="ethnicity_7" name="ethnicity_7" class="element checkbox ethnicity" type="checkbox" value="7" checked/>
-									<label class="choice" id="label_ethnicity_7" for="ethnicity_7">Hispanic</label>
-									<input id="ethnicity_8" name="ethnicity_8" class="element checkbox ethnicity" type="checkbox" value="8" checked/>
-									<label class="choice" id="label_ethnicity_8" for="ethnicity_8">Other</label>	
+									<label class="choice" id="label_ethnicity_7" for="ethnicity_7">Other</label>
 								</span> 
 							</li>	
 							<li id="color_code" >

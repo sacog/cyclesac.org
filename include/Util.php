@@ -12,17 +12,19 @@ class Util
 
 	public static function log( $data )
 	{
+		$log_filename = 'c:/Windows/Temp/cyclesac_web.log';
+		$log_message = '';
 		if ( is_string( $data ) )
 		{
 			if ( defined( '__SCRIPT__' ) )
 				$data = __SCRIPT__ . " {$data}";
-
-			error_log( $data );
+			error_log(date("c") . " | " . $data . "\r\n", 3, $log_filename );
 		}
 		elseif ( is_object( $data ) && $data instanceof Exception )
-			error_log( $data->__toString() );
+			error_log(date("c") . " | " . $data->__toString() . "\r\n", 3, $log_filename );
 		else
-			error_log( var_export( $data, true ) );
+			error_log(date("c") . " | " . var_export( $data, true ) . "\r\n", 3, $log_filename );
+
 	}
 
 	/**

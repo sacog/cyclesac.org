@@ -1,6 +1,6 @@
 // create the map content
 var map = L.map('mapBody', {
-    center: [33.77, -84.372], 
+    center: [38.56, -121.47],
     zoom: 14
 });
 
@@ -102,7 +102,7 @@ $('#ca_data_selector').submit(function() {
 	});
 	
 	//generate the demoQuery string
-	if(riderType!="") demoQuery = "WHERE rider_type IN ("+riderType+") ";
+	if(riderType!="") demoQuery = "WHERE rider_confidence IN ("+riderType+") ";
 	if(gender!=""){
 		if(demoQuery != "") demoQuery += "AND gender IN ("+gender+") ";
 		else demoQuery += "WHERE gender IN ("+gender+") ";
