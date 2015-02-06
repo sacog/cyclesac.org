@@ -9,9 +9,9 @@ require_once( 'Util.php' );
 
 abstract class DatabaseConnection extends mysqli
 {
-	const USER     = '';
-	const PASSWORD = '';
-	const DATABASE = '';
+	const USER     = 'your_development_user_name';
+	const PASSWORD = 'your_development_password';
+	const DATABASE = 'your_development_db_name';
 
 	public function __construct( $host, $user, $password, $database )
 	{
@@ -32,7 +32,7 @@ abstract class DatabaseConnection extends mysqli
 
 class LocalDatabaseConnection extends DatabaseConnection 
 {
-	const HOST     = 'localhost';
+	const HOST     =  'your_development_db_server';
 
 	public function __construct()
 	{
