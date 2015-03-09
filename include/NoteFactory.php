@@ -4,7 +4,7 @@ require_once('Database.php');
 require_once('Note.php');
 require_once(dirname(__FILE__).'/pel/PelJpeg.php');
 
-define ('IMAGE_PATH', 'C:/inetpub/uploads_dev/');
+define ('IMAGE_PATH', 'C:/inetpub/uploads/');
 
 class NoteFactory
 {
@@ -42,7 +42,6 @@ class NoteFactory
 			//return $trips;
 			
 			Util::log("note type text: {$note_type_text}");
-			
 			//save the image
 			if (filesize($image_file)>0){		
 				if(move_uploaded_file($_FILES['file']['tmp_name'], IMAGE_PATH . $image_url . ".jpg")) {
@@ -96,23 +95,6 @@ class NoteFactory
 		}
 
 		return $note;
-	}
-	
-	public static function getNotesByUser ( $user_id )
-	{
-		$db = DatabaseConnectionFactory::getConnection();
-		$notes = array();
-		
-		$query = "SELECT * FROM note WHERE user_id={$user_id}";
-
-		$result = $db->query( $query );		
-		while ( $note = $result->fetch_object( self::$class ) )
-				$notes[] = $note;
-
-		$result->close();
-		 
-		return $notes;
-
 	}
 
 	// functions for mucking EXIF data, pulled from gps example in pel project

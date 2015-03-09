@@ -41,14 +41,15 @@ if (isset($_SERVER['HTTP_CYCLEATL_PROTOCOL_VERSION'])) {
   $version = intval($_POST['version']);
 }
 
-Util::log ( "INFO Protocol version {$version}");
+Util::log ( "protocol version: {$version}");
 
 // older protocol types use a urlencoded form body
 if ( $version == PROTOCOL_VERSION_1 || $version == PROTOCOL_VERSION_2 || $version == null) {
   $coords   = isset( $_POST['coords'] )  ? $_POST['coords']  : null; 
   $device   = isset( $_POST['device'] )  ? $_POST['device']  : null; 
   $notes    = isset( $_POST['notes'] )   ? $_POST['notes']   : null; 
-  $purpose  = isset( $_POST['purpose'] ) ? $_POST['purpose'] : null; 
+  $purpose  = isset( $_POST['purpose'] ) ? $_POST['purpose'] : null;
+  $comfort  = isset( $_POST['comfort'] ) ? $_POST['comfort'] : null;
   $start    = isset( $_POST['start'] )   ? $_POST['start']   : null; 
   $userData = isset( $_POST['user'] )    ? $_POST['user']    : null; 
 } 
@@ -67,6 +68,7 @@ elseif ( $version == PROTOCOL_VERSION_3) {
   $device   = isset( $query_vars['device'] )  ? $query_vars['device']  : null;
   $notes    = isset( $query_vars['notes'] )   ? $query_vars['notes']   : null;
   $purpose  = isset( $query_vars['purpose'] ) ? $query_vars['purpose'] : null;
+  $comfort  = isset( $query_vars['comfort'] ) ? $query_vars['comfort'] : null;
   $start    = isset( $query_vars['start'] )   ? $query_vars['start']   : null;
   $userData = isset( $query_vars['user'] )    ? $query_vars['user']    : null;
 }
@@ -79,26 +81,27 @@ elseif ( $version == PROTOCOL_VERSION_4 ) {
 
 // validate device ID: should be 32 but some android devices are reporting 31
 // TODO: This will need to change once iOS7 device ID bug is fixed and released
-if ( is_string( $device ) && strlen( $device ) === 32 || strlen( $device ) === 31)
+//if ( is_string( $device ) && strlen( $device ) === 32 || strlen( $device ) === 31)
+if ( is_string( $device ) )
 {
 	// HOT FIX: check if the deviceID is the problematic one from iOS7, if so, append the email address if it exists, if no email, append random hash (creating a new user).
 	$userData = (object) json_decode( $userData );
 	if ( $device == "0f607264fc6318a92b9e13c65db7cd3c" ){
-		Util::log( "WARNING: iOS7 generic device id!");
+		Util::log( "ALERT: iOS7 generic device id!");
 		if ($userData->email) {
 			$device .= trim($userData->email);
-			Util::log ( "INFO: New deviceID: {$device}" );	
+			Util::log ( "New deviceID: {$device}" );
 		}
 		if ($userData->app_version == NULL) {
 			$userData->app_version = "1.0 on iOS 7";
-		} 	
+		}  			
 	}
 	
 	// try to lookup user by this device ID
 	$user = null;
 	if ( $user = UserFactory::getUserByDevice( $device ) )
 	{
-		Util::log( "INFO found user {$user->id} for device $device" );
+		Util::log( "found user {$user->id} for device $device" );
 		//print_r( $user );
 	}
 	elseif ( $user = UserFactory::insert( $device ) )
@@ -171,7 +174,7 @@ if ( is_string( $device ) && strlen( $device ) === 32 || strlen( $device ) === 3
 	
 			$coords  = (array) json_decode( $coords );
 			$n_coord = count( $coords );
-			//Util::log( "n_coord: {$n_coord}" );
+			Util::log( "n_coord: {$n_coord}" );
 	
 			// sort incoming coords by recorded timestamp
 			// NOTE: $coords might be a single object if only 1 coord so check is_array
@@ -195,23 +198,55 @@ if ( is_string( $device ) && strlen( $device ) === 32 || strlen( $device ) === 3
 				exit;
 			}
 			else
-				Util::log( "INFO Saving a new trip for user {$user->id} starting at {$start} with {$n_coord} coords." );
+				Util::log( "Saving a new trip for user {$user->id} starting at {$start} with {$n_coord} coords.." );
 	
 			// init stop to null
 			$stop = null;
 	
 			// create a new trip, note unique compound key (user_id, start) required
-			if ( $trip = TripFactory::insert( $user->id, $purpose, $notes, $start ) )
+			if ( $trip = TripFactory::insert( $user->id, $purpose, $comfort, $notes, $start ) )
 			{
 				$coord = null;
-				if ( $version == PROTOCOL_VERSION_3 ){					
-					$stop = CoordFactory::insert_bulk( $trip->id, $coords );	
+				if ( $version == PROTOCOL_VERSION_3 )
+					{
+					foreach ( $coords as $coord )
+					{ //( $trip_id, $recorded, $latitude, $longitude, $altitude=0, $speed=0, $hAccuracy=0, $vAccuracy=0 )
+						CoordFactory::insert(   $trip->id, 
+												$coord->r, //recorded timestamp
+												$coord->l, //latitude
+												$coord->n, //longitude
+												$coord->a, //altitude
+												$coord->s, //speed
+												$coord->h, //haccuracy
+												$coord->v ); //vaccuracy
+					}
+	
+					// get the last coord's recorded => stop timestamp
+					if ( $coord && isset( $coord->r ) )
+						$stop = $coord->r;
+					}
+				else if ( $version == PROTOCOL_VERSION_2 )
+				{
+					foreach ( $coords as $coord )
+					{
+						CoordFactory::insert(   $trip->id, 
+												$coord->rec, 
+												$coord->lat, 
+												$coord->lon,
+												$coord->alt, 
+												$coord->spd, 
+												$coord->hac, 
+												$coord->vac );
+					}
+	
+					// get the last coord's recorded => stop timestamp
+					if ( $coord && isset( $coord->rec ) )
+						$stop = $coord->rec;
 				}
-				else if ( $version == PROTOCOL_VERSION_2 ){
-					$stop = CoordFactory::insert_bulk_protocol_2 ( $trip->id, $coords );
-
-				} else { // PROTOCOL_VERSION_1
-					foreach ( $coords as $coord ){
+				else // PROTOCOL_VERSION_1
+				{
+					foreach ( $coords as $coord )
+					{
 						CoordFactory::insert(   $trip->id, 
 												$coord->recorded, 
 												$coord->latitude, 
@@ -227,12 +262,12 @@ if ( is_string( $device ) && strlen( $device ) === 32 || strlen( $device ) === 3
 						$stop = $coord->recorded;
 				}
 	
-				//Util::log( "stop: {$stop}" );
+				Util::log( "stop: {$stop}" );
 	
 				// update trip start, stop, n_coord
 				if ( $updatedTrip = TripFactory::update( $trip->id, $stop, $n_coord ) )
 				{
-					Util::log( "INFO updated trip {$updatedTrip->id} stop {$stop}, n_coord {$n_coord}" );
+					Util::log( "updated trip {$updatedTrip->id} stop {$stop}, n_coord {$n_coord}" );
 				}
 				else
 					Util::log( "WARNING failed to update trip {$trip->id} stop, n_coord" );
@@ -255,7 +290,7 @@ if ( is_string( $device ) && strlen( $device ) === 32 || strlen( $device ) === 3
 else
 	Util::log( "ERROR failed to save trip, invalid device: {$device}" );
 
-Util::log( "+++++++++++++ Production: Upload Finished with Error ++++++++++");
+Util::log( "+++++++++++++ Production: Upload Finished ++++++++++");
 
 header("HTTP/1.1 500 Internal Server Error");
 $response = new stdClass;
