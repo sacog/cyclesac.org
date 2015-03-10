@@ -75,13 +75,13 @@
 								</span>
 								<label class="description" for="rider_type">Rider Type</label>
 								<span>
-									<input id="rider_type_1" name="rider_type_1" class="element checkbox rider_type" type="checkbox" value="1" />
+									<input id="rider_type_1" name="rider_type_1" class="element checkbox rider_type" type="checkbox" value="1" checked/>
 									<label class="choice" id="label_rider_type_1" for="rider_type_1">Strong &amp; fearless</label>
 									<input id="rider_type_2" name="rider_type_2" class="element checkbox rider_type" type="checkbox" value="2" checked/>
 									<label class="choice" id="label_rider_type_2" for="rider_type_2">Enthused &amp; confident</label>
 									<input id="rider_type_3" name="rider_type_3" class="element checkbox rider_type" type="checkbox" value="3" checked/>
 									<label class="choice" id="label_rider_type_3" for="rider_type_3">Comfortable, but cautious</label>
-									<input id="rider_type_4" name="rider_type_4" class="element checkbox rider_type" type="checkbox" value="4" />
+									<input id="rider_type_4" name="rider_type_4" class="element checkbox rider_type" type="checkbox" value="4" checked/>
 									<label class="choice" id="label_rider_type_4" for="rider_type_4">Interested, but concerned</label>								
 								</span> 
 							</li>		
@@ -97,17 +97,17 @@
 							<li id="age" >
 								<label class="description" for="age">Age</label>
 								<span>
-									<input id="age_1" name="age_1" class="element checkbox age" type="checkbox" value="2" />
+									<input id="age_1" name="age_1" class="element checkbox age" type="checkbox" value="2" checked/>
 									<label class="choice" id="label_age_1" for="age_1">18-24</label>
-									<input id="age_2" name="age_2" class="element checkbox age" type="checkbox" value="3" />
+									<input id="age_2" name="age_2" class="element checkbox age" type="checkbox" value="3" checked/>
 									<label class="choice" id="label_age_2" for="age_2">25-34</label>
-									<input id="age_3" name="age_3" class="element checkbox age" type="checkbox" value="4" />
+									<input id="age_3" name="age_3" class="element checkbox age" type="checkbox" value="4" checked/>
 									<label class="choice" id="label_age_3" for="age_3">35-44</label>
 									<input id="age_4" name="age_4" class="element checkbox age" type="checkbox" value="5" checked/>
 									<label class="choice" id="label_age_4" for="age_4">45-54</label>
-									<input id="age_5" name="age_5" class="element checkbox age" type="checkbox" value="6" />
+									<input id="age_5" name="age_5" class="element checkbox age" type="checkbox" value="6" checked/>
 									<label class="choice" id="label_age_5" for="age_5">55-64</label>
-									<input id="age_6" name="age_6" class="element checkbox age" type="checkbox" value="7" />
+									<input id="age_6" name="age_6" class="element checkbox age" type="checkbox" value="7" checked/>
 									<label class="choice" id="label_age_6" for="age_6">65+</label>
 								</span> 
 							</li>	
