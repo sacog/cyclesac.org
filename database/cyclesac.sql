@@ -1,160 +1,325 @@
-CREATE TABLE trip (
-	id      INTEGER UNSIGNED AUTO_INCREMENT,
-	user_id INTEGER UNSIGNED,
-	purpose VARCHAR(255),
-	comfort VARCHAR(255),
-	notes VARCHAR(255),
-	start   TIMESTAMP,
-	stop    TIMESTAMP,
-	n_coord INTEGER UNSIGNED,
-	PRIMARY KEY ( id ),
-	UNIQUE KEY ( user_id, start )
-) ENGINE=INNODB;
+-- MySQL dump 10.13  Distrib 5.6.17, for Win64 (x86_64)
+--
+-- Host: localhost    Database: cycle_sac_2014_prod
+-- ------------------------------------------------------
+-- Server version	5.6.21-log
 
-CREATE TABLE note (
-	id        INTEGER UNSIGNED AUTO_INCREMENT,
-	user_id   INTEGER UNSIGNED,
-	trip_id   INTEGER UNSIGNED,
-	recorded  TIMESTAMP,
-	latitude  DOUBLE,
-	longitude DOUBLE,
-	altitude  DOUBLE,
-	speed     DOUBLE,
-	hAccuracy DOUBLE,
-	vAccuracy DOUBLE,
-	note_type TINYINT,
-	details   VARCHAR(255),
-	image_url VARCHAR(255),	
-	PRIMARY KEY ( id ),
-	UNIQUE KEY ( user_id, recorded )
-) ENGINE=INNODB;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE TABLE coord (
-	trip_id   INTEGER UNSIGNED,
-	recorded  TIMESTAMP,
-	latitude  DOUBLE,
-	longitude DOUBLE,
-	altitude  DOUBLE,
-	speed     DOUBLE,
-	hAccuracy DOUBLE,
-	vAccuracy DOUBLE,
-	PRIMARY KEY ( trip_id, recorded )
-) ENGINE=INNODB;
+--
+-- Table structure for table `age`
+--
 
-CREATE TABLE user (
-	id        INTEGER UNSIGNED AUTO_INCREMENT,
-	created   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	device    VARCHAR(128),
-	app_version  VARCHAR(32),
-	age       TINYINT,
-	email     VARCHAR(64),
-	future_survey BOOLEAN,
-	gender    TINYINT,
-	ethnicity TINYINT,
-	income	  TINYINT,
-	homeZIP   VARCHAR(32),
-	workZIP   VARCHAR(32),
-	cycling_freq  TINYINT default NULL,
-	rider_confidence    TINYINT,
-	PRIMARY KEY ( id ),
-	UNIQUE KEY ( device )
-) ENGINE=INNODB;
+DROP TABLE IF EXISTS `age`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `age` (
+  `id` tinyint(4) NOT NULL DEFAULT '0',
+  `text` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE TABLE age (
-	id   TINYINT,
-	text VARCHAR(32),
-	PRIMARY KEY ( id )
-) ENGINE=INNODB;
+--
+-- Dumping data for table `age`
+--
 
-CREATE TABLE gender (
-	id   TINYINT,
-	text VARCHAR(32),
-	PRIMARY KEY ( id )
-) ENGINE=INNODB;
+LOCK TABLES `age` WRITE;
+/*!40000 ALTER TABLE `age` DISABLE KEYS */;
+INSERT INTO `age` VALUES (0,'no data'),(1,'Less than 18'),(2,'18-24'),(3,'25-34'),(4,'35-44'),(5,'45-54'),(6,'55-64'),(7,'65+');
+/*!40000 ALTER TABLE `age` ENABLE KEYS */;
+UNLOCK TABLES;
 
-CREATE TABLE ethnicity (
-	id   TINYINT,
-	text VARCHAR(32),
-	PRIMARY KEY ( id )
-) ENGINE=INNODB;
+--
+-- Table structure for table `coord`
+--
 
-CREATE TABLE income (
-	id   TINYINT,
-	text VARCHAR(32),
-	PRIMARY KEY ( id )
-) ENGINE=INNODB;
+DROP TABLE IF EXISTS `coord`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `coord` (
+  `trip_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `recorded` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `latitude` double DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
+  `altitude` double DEFAULT NULL,
+  `speed` double DEFAULT NULL,
+  `hAccuracy` double DEFAULT NULL,
+  `vAccuracy` double DEFAULT NULL,
+  PRIMARY KEY (`trip_id`,`recorded`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE TABLE cycling_freq (
-	id   TINYINT,
-	text VARCHAR(32),
-	PRIMARY KEY ( id )
-) ENGINE=INNODB;
+--
+-- Dumping data for table `coord`
+--
 
-CREATE TABLE rider_confidence (
-	id   TINYINT,
-	text VARCHAR(32),
-	PRIMARY KEY ( id )
-) ENGINE=INNODB;
+LOCK TABLES `coord` WRITE;
+/*!40000 ALTER TABLE `coord` DISABLE KEYS */;
+/*!40000 ALTER TABLE `coord` ENABLE KEYS */;
+UNLOCK TABLES;
 
-CREATE TABLE note_type (
-	id   TINYINT,
-	text VARCHAR(32),
-	PRIMARY KEY ( id )
-) ENGINE=INNODB;
+--
+-- Table structure for table `cycling_freq`
+--
 
-INSERT INTO age ( id, text ) VALUES ( 0, "no data" );
-INSERT INTO age ( id, text ) VALUES ( 1, "Less than 18" );
-INSERT INTO age ( id, text ) VALUES ( 2, "18-24" );
-INSERT INTO age ( id, text ) VALUES ( 3, "25-34" );
-INSERT INTO age ( id, text ) VALUES ( 4, "35-44" );
-INSERT INTO age ( id, text ) VALUES ( 5, "45-54" );
-INSERT INTO age ( id, text ) VALUES ( 6, "55-64" );
-INSERT INTO age ( id, text ) VALUES ( 7, "65+" );
+DROP TABLE IF EXISTS `cycling_freq`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cycling_freq` (
+  `id` tinyint(4) NOT NULL DEFAULT '0',
+  `text` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO gender ( id, text ) VALUES ( 0, "no data" );
-INSERT INTO gender ( id, text ) VALUES ( 1, "Female" );
-INSERT INTO gender ( id, text ) VALUES ( 2, "Male" ); 
+--
+-- Dumping data for table `cycling_freq`
+--
 
-INSERT INTO ethnicity ( id, text ) VALUES ( 0, "no data" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 1, "African-American" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 2, "Asian" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 3, "Caucasian/White" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 4, "Hispanic/Latino" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 5, "Native American/Alaskan" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 6, "Pacific Islander/Hawaiian native" );
-INSERT INTO ethnicity ( id, text ) VALUES ( 7, "Other" );
+LOCK TABLES `cycling_freq` WRITE;
+/*!40000 ALTER TABLE `cycling_freq` DISABLE KEYS */;
+INSERT INTO `cycling_freq` VALUES (0,'no data'),(1,'Less than once a month'),(2,'Several times per month'),(3,'Several times per week'),(4,'Daily');
+/*!40000 ALTER TABLE `cycling_freq` ENABLE KEYS */;
+UNLOCK TABLES;
 
-INSERT INTO income ( id, text ) VALUES ( 0, "no data" );
-INSERT INTO income ( id, text ) VALUES ( 1, "Less than $15,000" );
-INSERT INTO income ( id, text ) VALUES ( 2, "$15,000 to $34,999" );
-INSERT INTO income ( id, text ) VALUES ( 3, "$35,000 to $49,999" );
-INSERT INTO income ( id, text ) VALUES ( 4, "$50,000 to $74,999" );
-INSERT INTO income ( id, text ) VALUES ( 5, "$75,000 to $99,999" );
-INSERT INTO income ( id, text ) VALUES ( 6, "$100,000 to $149,999" );
-INSERT INTO income ( id, text ) VALUES ( 7, "$150,000 to $199,999" );
-INSERT INTO income ( id, text ) VALUES ( 8, "More than $200,000" );
+--
+-- Table structure for table `ethnicity`
+--
 
-INSERT INTO cycling_freq ( id, text ) VALUES ( 0, "no data" );
-INSERT INTO cycling_freq ( id, text ) VALUES ( 1, "Less than once a month" );
-INSERT INTO cycling_freq ( id, text ) VALUES ( 2, "Several times per month" );
-INSERT INTO cycling_freq ( id, text ) VALUES ( 3, "Several times per week" );
-INSERT INTO cycling_freq ( id, text ) VALUES ( 4, "Daily" );
+DROP TABLE IF EXISTS `ethnicity`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ethnicity` (
+  `id` tinyint(4) NOT NULL DEFAULT '0',
+  `text` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO rider_confidence ( id, text ) VALUES ( 0, "no data" );
-INSERT INTO rider_confidence ( id, text ) VALUES ( 1, "Strong & fearless" );
-INSERT INTO rider_confidence ( id, text ) VALUES ( 2, "Enthused & confident" );
-INSERT INTO rider_confidence ( id, text ) VALUES ( 3, "Comfortable, but cautious" );
-INSERT INTO rider_confidence ( id, text ) VALUES ( 4, "Interested, but concerned" );
+--
+-- Dumping data for table `ethnicity`
+--
 
-INSERT INTO note_type ( id, text ) VALUES (0, 'Pavement issue');
-INSERT INTO note_type ( id, text ) VALUES (1, 'Traffic signal');
-INSERT INTO note_type ( id, text ) VALUES (2, 'Enforcement');
-INSERT INTO note_type ( id, text ) VALUES (3, 'Bike parking');
-INSERT INTO note_type ( id, text ) VALUES (4, 'Bike lane issue');
-INSERT INTO note_type ( id, text ) VALUES (5, 'Note this issue');
-INSERT INTO note_type ( id, text ) VALUES (6, 'Bike parking');
-INSERT INTO note_type ( id, text ) VALUES (7, 'Bike shops');
-INSERT INTO note_type ( id, text ) VALUES (8, 'Public restrooms');
-INSERT INTO note_type ( id, text ) VALUES (9, 'Secret passage');
-INSERT INTO note_type ( id, text ) VALUES (10, 'Water fountain');
-INSERT INTO note_type ( id, text ) VALUES (11, 'Note this asset');
+LOCK TABLES `ethnicity` WRITE;
+/*!40000 ALTER TABLE `ethnicity` DISABLE KEYS */;
+INSERT INTO `ethnicity` VALUES (0,'no data'),(1,'African-American'),(2,'Asian'),(3,'Caucasian/White'),(4,'Hispanic/Latino'),(5,'Native American/Alaskan'),(6,'Pacific Islander/Hawaiian native'),(7,'Other');
+/*!40000 ALTER TABLE `ethnicity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `gender`
+--
+
+DROP TABLE IF EXISTS `gender`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `gender` (
+  `id` tinyint(4) NOT NULL DEFAULT '0',
+  `text` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gender`
+--
+
+LOCK TABLES `gender` WRITE;
+/*!40000 ALTER TABLE `gender` DISABLE KEYS */;
+INSERT INTO `gender` VALUES (0,'no data'),(1,'Female'),(2,'Male');
+/*!40000 ALTER TABLE `gender` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `income`
+--
+
+DROP TABLE IF EXISTS `income`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `income` (
+  `id` tinyint(4) NOT NULL DEFAULT '0',
+  `text` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `income`
+--
+
+LOCK TABLES `income` WRITE;
+/*!40000 ALTER TABLE `income` DISABLE KEYS */;
+INSERT INTO `income` VALUES (0,'no data'),(1,'Less than $15,000'),(2,'$15,000 to $24,999'),(3,'$25,000 to $34,999'),(4,'$35,000 to $49,999'),(5,'$50,000 to $74,999'),(6,'$75,000 to $99,999'),(7,'$100,000 to $149,999'),(8,'$150,000 to $199,999'),(9,'More than $200,000');
+/*!40000 ALTER TABLE `income` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `note`
+--
+
+DROP TABLE IF EXISTS `note`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `note` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `trip_id` int(10) unsigned DEFAULT NULL,
+  `recorded` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `latitude` double DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
+  `altitude` double DEFAULT NULL,
+  `speed` double DEFAULT NULL,
+  `hAccuracy` double DEFAULT NULL,
+  `vAccuracy` double DEFAULT NULL,
+  `note_type` tinyint(4) DEFAULT NULL,
+  `details` varchar(1024) DEFAULT NULL,
+  `image_url` varchar(1024) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`recorded`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `note`
+--
+
+LOCK TABLES `note` WRITE;
+/*!40000 ALTER TABLE `note` DISABLE KEYS */;
+/*!40000 ALTER TABLE `note` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `note_type`
+--
+
+DROP TABLE IF EXISTS `note_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `note_type` (
+  `id` tinyint(4) NOT NULL DEFAULT '0',
+  `text` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `note_type`
+--
+
+LOCK TABLES `note_type` WRITE;
+/*!40000 ALTER TABLE `note_type` DISABLE KEYS */;
+INSERT INTO `note_type` VALUES (0,'Pavement issue'),(1,'Traffic signal'),(2,'Enforcement'),(3,'Bike parking'),(4,'Bike lane issue'),(5,'Note this issue'),(6,'Bike parking'),(7,'Bike shops'),(8,'Public restrooms'),(9,'Secret passage'),(10,'Water fountain'),(11,'Note this asset');
+/*!40000 ALTER TABLE `note_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rider_confidence`
+--
+
+DROP TABLE IF EXISTS `rider_confidence`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rider_confidence` (
+  `id` tinyint(4) NOT NULL DEFAULT '0',
+  `text` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rider_confidence`
+--
+
+LOCK TABLES `rider_confidence` WRITE;
+/*!40000 ALTER TABLE `rider_confidence` DISABLE KEYS */;
+INSERT INTO `rider_confidence` VALUES (0,'no data'),(1,'Strong & fearless'),(2,'Enthused & confident'),(3,'Comfortable, but cautious'),(4,'Interested, but concerned');
+/*!40000 ALTER TABLE `rider_confidence` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `trip`
+--
+
+DROP TABLE IF EXISTS `trip`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trip` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `purpose` varchar(255) DEFAULT NULL,
+  `comfort` varchar(255) NOT NULL,
+  `notes` varchar(255) DEFAULT NULL,
+  `start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `stop` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `n_coord` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`start`)
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `trip`
+--
+
+LOCK TABLES `trip` WRITE;
+/*!40000 ALTER TABLE `trip` DISABLE KEYS */;
+/*!40000 ALTER TABLE `trip` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `device` varchar(255) DEFAULT NULL,
+  `app_version` varchar(255) DEFAULT NULL,
+  `age` tinyint(4) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `future_survey` tinyint(1) DEFAULT NULL,
+  `gender` tinyint(4) DEFAULT NULL,
+  `ethnicity` tinyint(4) DEFAULT NULL,
+  `income` tinyint(4) DEFAULT NULL,
+  `homeZIP` varchar(32) DEFAULT NULL,
+  `workZIP` varchar(32) DEFAULT NULL,
+  `cycling_freq` tinyint(4) DEFAULT NULL,
+  `rider_confidence` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `device` (`device`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2015-03-10 12:28:36
