@@ -131,7 +131,7 @@ class CoordFactory
 				$point = $coords[$pointIndex];
 				if (Util::latlongPointDistance($first->latitude, $first->longitude, $point->latitude, $point->longitude) < $filterStartEndThreshold ||
 					Util::latlongPointDistance($last->latitude, $last->longitude, $point->latitude, $point->longitude) < $filterStartEndThreshold) {
-					unset($coords[$pointIndex])
+					unset($coords[$pointIndex]);
 				}
 			}
 			$coords = array_values($coords);

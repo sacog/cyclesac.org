@@ -102,18 +102,18 @@ $('#ca_data_selector').submit(function() {
 	});
 	
 	//generate the demoQuery string
-	if(riderType!="") demoQuery = "WHERE rider_confidence IN ("+riderType+") ";
+	if(riderType!="") demoQuery = "WHERE (rider_confidence IN ("+riderType+") OR rider_confidence IS NULL) ";
 	if(gender!=""){
-		if(demoQuery != "") demoQuery += "AND gender IN ("+gender+") ";
-		else demoQuery += "WHERE gender IN ("+gender+") ";
+		if(demoQuery != "") demoQuery += "AND (gender IN ("+gender+") OR gender IS NULL) ";
+		else demoQuery += "WHERE (gender IN ("+gender+") OR gender IS NULL) ";
 	}
 	if(ethnicity!=""){
-		if(demoQuery != "") demoQuery += "AND ethnicity IN ("+ethnicity+") ";
-		else demoQuery += "WHERE ethnicity IN ("+ethnicity+") ";
+		if(demoQuery != "") demoQuery += "AND (ethnicity IN ("+ethnicity+") OR ethnicity IS NULL) ";
+		else demoQuery += "WHERE (ethnicity IN ("+ethnicity+") OR ethnicity IS NULL) ";
 	}
 	if(age!=""){ 
-		if(demoQuery != "")demoQuery += "AND age IN ("+age+") ";
-		else demoQuery += "WHERE age IN ("+age+") ";
+		if(demoQuery != "")demoQuery += "AND (age IN ("+age+") OR age IS NULL) ";
+		else demoQuery += "WHERE (age IN ("+age+") OR age IS NULL) ";
 	}
 	//generate the purposeQuery
 	for(i=0; i < purpose.length; i++){
