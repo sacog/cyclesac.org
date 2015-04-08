@@ -92,6 +92,55 @@ class CoordFactory
 
 		return false;
 	}
+	
+	
+	
+	// trip_id can only be a single id
+	// points within 30 meters of the origin or destination are filtered
+	public static function getCoordsByTripFilterStartEnd( $trip_id )
+	{
+		
+		$db = DatabaseConnectionFactory::getConnection();
+		$coords = array();
+		
+		$filterStartEndThreshold = 0.03; // filter out points within 30 m of start / end
+		$latLongMinThreshold = 0.007; //delta must be more than 7m
+		$query = "SELECT * FROM coord WHERE trip_id IN (" . $db->escape_string( $trip_id ) . ") ORDER BY recorded;";
+				
+		if ( ( $result = $db->query( $query ) ) && $result->num_rows )
+		{
+			$first = null;
+			$last = null;
+			while ( $coord = $result->fetch_object( self::$class ) ){
+				if (!$first) {
+					$first = $coord;
+				}
+				if($last && $coord->trip_id == $last->trip_id){
+					$latLongDistance = Util::latlongPointDistance($last->latitude, $last->longitude, $coord->latitude, $coord->longitude);
+					if( $latLongDistance >= $latLongMinThreshold ){
+						$coords[] = $coord;
+					}
+				} else { 
+					$coords[] = $coord;						
+				}
+				$last = $coord;
+			}
+			$result->close();
+			// Filter out points that are within a tolerance distance of the start / end coordinates
+			foreach(array_keys($coords) as $pointIndex) { 
+				$point = $coords[$pointIndex];
+				if (Util::latlongPointDistance($first->latitude, $first->longitude, $point->latitude, $point->longitude) < $filterStartEndThreshold ||
+					Util::latlongPointDistance($last->latitude, $last->longitude, $point->latitude, $point->longitude) < $filterStartEndThreshold) {
+					unset($coords[$pointIndex])
+				}
+			}
+			$coords = array_values($coords);
+		}
+		$result = null;
+		Util::log( "INFO " . __METHOD__ . "() with query of length " . strlen($query) . ' RET2: memory_usage = ' . memory_get_usage(True));
+
+		return json_encode($coords);
+	}
 
 	// trip_id can be a single id, or an array of ids
 	// if it's an array of ids, returns the result object directly because creating an
