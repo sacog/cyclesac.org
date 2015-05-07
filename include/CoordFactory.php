@@ -96,14 +96,15 @@ class CoordFactory
 	
 	
 	// trip_id can only be a single id
-	// points within 30 meters of the origin or destination are filtered
+	// points within 305 meters of the origin or destination are filtered
 	public static function getCoordsByTripFilterStartEnd( $trip_id )
 	{
 		
 		$db = DatabaseConnectionFactory::getConnection();
 		$coords = array();
+		$filteredCoords = array();
 		
-		$filterStartEndThreshold = 0.03; // filter out points within 30 m of start / end
+		$filterStartEndThreshold = 0.305; // filter out points within 305m of start / end
 		$latLongMinThreshold = 0.007; //delta must be more than 7m
 		$query = "SELECT * FROM coord WHERE trip_id IN (" . $db->escape_string( $trip_id ) . ") ORDER BY recorded;";
 				
@@ -127,19 +128,19 @@ class CoordFactory
 			}
 			$result->close();
 			// Filter out points that are within a tolerance distance of the start / end coordinates
+			Util::log( "INFO " . __METHOD__ . " size  of original coords = " . sizeof($coords));
 			foreach(array_keys($coords) as $pointIndex) { 
 				$point = $coords[$pointIndex];
-				if (Util::latlongPointDistance($first->latitude, $first->longitude, $point->latitude, $point->longitude) < $filterStartEndThreshold ||
-					Util::latlongPointDistance($last->latitude, $last->longitude, $point->latitude, $point->longitude) < $filterStartEndThreshold) {
-					unset($coords[$pointIndex]);
+				if (Util::latlongPointDistance($first->latitude, $first->longitude, $point->latitude, $point->longitude) >= $filterStartEndThreshold &&
+					Util::latlongPointDistance($last->latitude, $last->longitude, $point->latitude, $point->longitude) >= $filterStartEndThreshold) {
+					$filteredCoords[] = $point;
 				}
 			}
-			$coords = array_values($coords);
+			Util::log( "INFO " . __METHOD__ . " size  of filtered coords = " . sizeof($filteredCoords));
 		}
 		$result = null;
 		Util::log( "INFO " . __METHOD__ . "() with query of length " . strlen($query) . ' RET2: memory_usage = ' . memory_get_usage(True));
-
-		return json_encode($coords);
+		return json_encode($filteredCoords);
 	}
 
 	// trip_id can be a single id, or an array of ids
