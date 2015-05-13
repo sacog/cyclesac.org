@@ -31,7 +31,7 @@ var colorArray = ['#909291', '#C84140', '#3C6E9C', '#70A35C', '#EEAE53', '#82538
 //array order: grey, red, blue, green, orange, purple, shopping, l.purple, grey
 var showColors = "none";
 
-var LOAD_CHUNK = 35; // constant for how many trips to fetch at a time.
+var LOAD_CHUNK = 1; // constant for how many trips to fetch at a time.
 
 function tileOpacity (alpha){
 	mapTileLayer.setOpacity(alpha);

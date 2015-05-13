@@ -95,7 +95,7 @@ class CoordFactory
 	
 	
 	
-		// trip_id can only be a single id
+	// trip_id can only be a single id
 	// points within 305 meters of the origin or destination are filtered
 	public static function getCoordsByTripFilterStartEnd( $trip_id )
 	{
@@ -105,9 +105,9 @@ class CoordFactory
 		$filteredCoords = array();
 		
 		$filterStartEndThreshold = 0.305; // filter out points within 305m of start / end
-		$latLongMinThreshold = 0.007; //delta must be more than 7m
-		$query = "SELECT * FROM coord WHERE trip_id IN (" . $db->escape_string( $trip_id ) . ") ORDER BY recorded;";
-				
+		$latLongMinThreshold = 0.05; //delta must be more than 10m
+		$query = "SELECT trip_id,latitude,longitude FROM coord WHERE trip_id =" . $db->escape_string( $trip_id ) . " ORDER BY recorded;";
+		Util::log( "INFO " . __METHOD__ . " fetching coords for trip " . $trip_id);		
 		if ( ( $result = $db->query( $query ) ) && $result->num_rows )
 		{
 			$first = null;
@@ -120,11 +120,12 @@ class CoordFactory
 					$latLongDistance = Util::latlongPointDistance($last->latitude, $last->longitude, $coord->latitude, $coord->longitude);
 					if( $latLongDistance >= $latLongMinThreshold ){
 						$coords[] = $coord;
+						$last = $coord;
 					}
 				} else { 
 					$coords[] = $coord;						
+					$last = $coord;
 				}
-				$last = $coord;
 			}
 			$result->close();
 			// Filter out points that are within a tolerance distance of the start / end coordinates
