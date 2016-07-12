@@ -135,7 +135,7 @@ class Util
 		$dlat = $lat2 - $lat1;
 		$dlng = $lng2 - $lng1;
 		$a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlng / 2) * sin($dlng / 2);
-		$c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+		$c = 2 * asin(min(1,sqrt($a)));
 		$km = $r * $c;
 	 
 		return ($km);

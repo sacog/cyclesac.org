@@ -105,7 +105,7 @@ class CoordFactory
 		$filteredCoords = array();
 		
 		$filterStartEndThreshold = 0.305; // filter out points within 305m of start / end
-		$latLongMinThreshold = 0.05; //delta must be more than 10m
+		$latLongMinThreshold = 0.05; //delta must be more than 5m
 		$query = "SELECT trip_id,latitude,longitude FROM coord WHERE trip_id =" . $db->escape_string( $trip_id ) . " ORDER BY recorded;";
 		Util::log( "INFO " . __METHOD__ . " fetching coords for trip " . $trip_id);		
 		if ( ( $result = $db->query( $query ) ) && $result->num_rows )
@@ -113,18 +113,16 @@ class CoordFactory
 			$first = null;
 			$last = null;
 			while ( $coord = $result->fetch_object( self::$class ) ){
-				if (!$first) {
+				if (is_null($first)) {
 					$first = $coord;
-				}
-				if($last && $coord->trip_id == $last->trip_id){
+					$last = $coord;
+					$coords[] = $coord;
+				} else {
 					$latLongDistance = Util::latlongPointDistance($last->latitude, $last->longitude, $coord->latitude, $coord->longitude);
 					if( $latLongDistance >= $latLongMinThreshold ){
 						$coords[] = $coord;
 						$last = $coord;
 					}
-				} else { 
-					$coords[] = $coord;						
-					$last = $coord;
 				}
 			}
 			$result->close();
